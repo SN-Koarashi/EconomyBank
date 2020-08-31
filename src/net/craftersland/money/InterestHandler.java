@@ -72,16 +72,25 @@ public class InterestHandler {
         			lastInterestTime = System.currentTimeMillis();
         			List<Player> onlinePlayers = new ArrayList<Player>(Bukkit.getOnlinePlayers());
         			if (onlinePlayers.isEmpty() == false) {
-        				for (Player p : onlinePlayers) {            			
+        				for (Player p : onlinePlayers) {
+        					if(p.hasPermission("MysqlEconomyBank.interest")){
                 			Double intPercentage = Double.parseDouble(pl.getConfigurationHandler().getString("general.interest.percentageAmount").replace("%", ""));
                 			Double balance = pl.getMoneyDatabaseInterface().getBalance(p);
                 			
-                			if (balance < pl.getConfigurationHandler().getInteger("general.maxBankLimitMoney")) {
-                				Double interest = (balance / 100) * intPercentage;
-                    			
-                    			pl.getMoneyDatabaseInterface().setBalance(p, balance + interest);
-                    			pl.getConfigurationHandler().printMessage(p, "chatMessages.interest", interest.toString(), p, p.getName());
-                			}            			
+								if (balance < pl.getConfigurationHandler().getInteger("general.maxBankLimitMoney")) {
+									Double old_interest = (balance / 100) * intPercentage;
+									Double interest;
+
+									if (old_interest > 5000) {
+										interest = 5000.00;
+									} else {
+										interest = old_interest;
+									}
+
+									pl.getMoneyDatabaseInterface().setBalance(p, balance + interest);
+									pl.getConfigurationHandler().printMessage(p, "chatMessages.interest", interest.toString(), p, p.getName());
+								}
+                			}
             			}
             			onlinePlayers.clear();
         			}
