@@ -17,6 +17,9 @@ permissions:
     MysqlEconomyBank.use:
         description: Allows the use of the MysqlEconomyBank signs.
         default: true
+    MysqlEconomyBank.interest:
+        description: Allows the use of the MysqlEconomyBank interest.
+        default: true
     MysqlEconomyBank.admin:
         description: Allows creating and removing MysqlEconomyBank signs.
         default: op
